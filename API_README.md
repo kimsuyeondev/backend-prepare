@@ -357,7 +357,7 @@ curl -X POST http://localhost:8080/api/coupons/calculate \
 
 ---
 
-## 🎓 면접 포인트
+## 🎓 포인트
 
 ### 1. 동시성 처리
 **Q**: 선착순 쿠폰 발급에서 왜 Pessimistic Lock을 사용했나요?
