@@ -4,9 +4,18 @@ CLAUDE CODE AI 환경을 적극 활용하여,
 이번에는 Java & JPA 관점에서 구조적으로 재정리하는 것을 목표로 합니다.
 실제 플랫폼에서 나올 법한 **실무 중심 과제**를 연습할 수 있는 프로젝트입니다.
 
+##  기술 스택
+
+- Java 17
+- Spring Boot 3.2.0
+- Spring Data JPA
+- H2 Database (In-memory)
+- Lombok
+- JUnit 5
+- SpringDoc OpenAPI (Swagger)
 ---
 
-## 🚀 빠른 시작
+## 빠른 시작
 
 ### 1. 프로젝트 실행
 
@@ -26,9 +35,9 @@ cd backend-prepare
 
 ---
 
-## 📚 포함된 문제
+## 포함된 문제
 
-### ✅ 1. 동시성 처리 (재고 관리) - 완성!
+### 1. 동시성 처리 (재고 관리) - 완성
 
 **문제**: 여러 사용자가 동시에 주문할 때 재고가 정확하게 차감되도록 구현
 
@@ -104,7 +113,7 @@ curl -X POST http://localhost:8080/api/orders/optimistic \
 
 ---
 
-## 🧪 동시성 테스트 시나리오
+## 동시성 테스트 시나리오
 
 ### 시나리오
 - 재고 10개인 메뉴
@@ -113,7 +122,7 @@ curl -X POST http://localhost:8080/api/orders/optimistic \
 
 ### 테스트 결과
 
-**중요:** H2 in-memory DB는 기본적으로 어느 정도 동시성을 처리하기 때문에, 테스트 환경에서는 문제가 재현되지 않을 수 있습니다.
+**중요:** H2 in-memory DB는 기본적으로 어느 정도 동시성을 처리하기 때문에, 테스트 환경에서는 문제가 재현되지 않을 수 있다.
 
 하지만 **실제 프로덕션 환경**에서는:
 - 네트워크 지연
@@ -121,19 +130,19 @@ curl -X POST http://localhost:8080/api/orders/optimistic \
 - 높은 트래픽
 - 분산 서버 환경
 
-이런 요인들로 인해 동시성 문제가 발생할 확률이 매우 높습니다!
+이런 요인들로 인해 동시성 문제가 발생할 확률이 매우 높습니다
 
 ### 방법별 비교
 
 | 방법 | Over-selling | 성능 | 복잡도 | 프로덕션 안정성 |
 |------|-------------|------|--------|----------------|
-| 동시성 처리 없음 | ❌ 발생 가능 | 빠름 | 단순 | ❌ 위험 |
-| Pessimistic Lock | ✅ 방지 | 느림 | 단순 | ✅ 안전 |
-| Optimistic Lock | ✅ 방지 | 빠름 | 복잡 (재시도 필요) | ✅ 안전 |
+| 동시성 처리 없음 | 발생 가능 | 빠름 | 단순 |  위험 |
+| Pessimistic Lock |  방지 | 느림 | 단순 | 안전 |
+| Optimistic Lock |  방지 | 빠름 | 복잡 (재시도 필요) |  안전 |
 
 ---
 
-## 📖 학습 포인트
+## 학습 포인트
 
 ### 1. Pessimistic Lock (비관적 락)
 ```java
@@ -170,7 +179,7 @@ while (retryCount < MAX_RETRY) {
 
 ---
 
-## 🗂️ 프로젝트 구조
+##  프로젝트 구조
 
 ```
 backend-prepare/
@@ -212,7 +221,7 @@ backend-prepare/
 
 ---
 
-## 💡 연습 방법
+## 연습 방법
 
 ### Step 1: 코드 읽기
 1. `OrderService` (동시성 처리 없음) 먼저 읽기
@@ -243,26 +252,23 @@ Swagger UI에서 직접 API 호출해보기:
 
 ## 
 
-### Q1. Pessimistic Lock과 Optimistic Lock의 차이는?
-**답변**:
+### Q1. Pessimistic Lock과 Optimistic Lock의 차이
 - Pessimistic Lock은 데이터를 읽을 때부터 락을 걸어 다른 트랜잭션의 접근을 차단합니다. 충돌이 자주 발생하는 환경에서 안전하지만 대기 시간이 발생합니다.
 - Optimistic Lock은 락을 걸지 않고 Version 필드로 충돌을 감지합니다. 성능은 좋지만 충돌 시 재시도가 필요합니다.
 
 ### Q2. 재고가 10개인데 100명이 동시 주문하면?
-**답변**:
 - 동시성 처리가 없으면 Over-selling이 발생할 수 있습니다.
 - Pessimistic Lock을 사용하면 먼저 온 10명만 성공하고 나머지는 대기 후 실패합니다.
 - Optimistic Lock을 사용하면 충돌 발생 시 재시도하며, 최종적으로 10명만 성공합니다.
 
-### Q3. 실제 서비스에서는 어떤 방법을 사용하나요?
-**답변**:
+### Q3. 실제 서비스에서는 어떤 방법을 사용하나?
 - 재고 관리는 Pessimistic Lock이나 Redis 분산 락 사용
 - 게시글 수정 등은 Optimistic Lock 사용
 - 트래픽이 매우 높으면 Redis + 메시지 큐 조합
 
 ---
 
-## 🔜 다음 문제 (Coming Soon)
+##  다음 문제 (Coming Soon)
 
 - [ ] 쿠폰 할인 시스템 (비즈니스 로직 설계)
 - [ ] 배달매칭 알고리즘 (거리 기반 최적화)
@@ -271,12 +277,3 @@ Swagger UI에서 직접 API 호출해보기:
 
 ---
 
-## 🛠️ 기술 스택
-
-- Java 17
-- Spring Boot 3.2.0
-- Spring Data JPA
-- H2 Database (In-memory)
-- Lombok
-- JUnit 5
-- SpringDoc OpenAPI (Swagger)
